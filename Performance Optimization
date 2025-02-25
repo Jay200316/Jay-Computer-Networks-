@@ -1,0 +1,7 @@
+// File: performance/optimization.js
+// Performance Optimization
+const compression = require('compression');
+const cloudflareCDN = require('cloudflare-cdn');
+
+app.use(compression());
+app.use(cloudflareCDN());
