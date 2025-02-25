@@ -1,0 +1,6 @@
+// File: deployment/monitoring.js
+// Deployment & Monitoring
+const Prometheus = require('prom-client');
+const collectDefaultMetrics = Prometheus.collectDefaultMetrics;
+collectDefaultMetrics();
+module.exports = Prometheus;
