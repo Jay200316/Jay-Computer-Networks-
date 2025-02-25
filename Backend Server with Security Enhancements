@@ -1,0 +1,23 @@
+// File: backend/server.js
+// Main Backend Server with Security Enhancements
+const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+const csrf = require('csurf');
+const session = require('express-session');
+require('dotenv').config();
+
+const app = express();
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true, cookie: { secure: true, httpOnly: true } }));
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+app.use(limiter);
+app.use(csrf());
+
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
+
+module.exports = app;
