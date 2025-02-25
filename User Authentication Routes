@@ -1,0 +1,19 @@
+// File: backend/routes/auth.js
+// User Authentication Routes
+const express = require('express');
+const bcrypt = require('bcrypt');
+const pool = require('../database');
+const router = express.Router();
+
+router.post('/register', async (req, res) => {
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        await pool.query('INSERT INTO users (email, password) VALUES ($1, $2)', [email, hashedPassword]);
+        res.status(201).send('User registered');
+    } catch (err) {
+        res.status(500).send('Error registering user');
+    }
+});
+
+module.exports = router;
